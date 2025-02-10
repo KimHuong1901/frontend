@@ -1,16 +1,18 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://localhost:8080/api";
 const getAllOrder = async (page=1, limit = 5) => {
     try{
         const result = await axios.get(BASE_URL + `/orders?_page=${page}&_limit=${limit}`);
-        return result.data;
+        console.log(result);
+        console.log("API Response:", result.data);
+        return result.data.content;
     } catch (error) {
         return [];
     }
 }
 const saveOrder = async (order) => {
     try {
-        order.total = order.products.price * order.quantity;
+        order.total = order.product.price * order.quantity;
         const result = await axios.post(BASE_URL + '/orders',order);
         return true;
     } catch (error) {

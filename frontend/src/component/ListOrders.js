@@ -31,7 +31,7 @@ function OrdersList() {
             } else {
                 orders = await orderService.searchOrder(searchQuery, startDate, endDate);
             }
-
+            console.log("Orders from API:", orders);
             setOrders(orders);
             const totalOrders = orders.length;
             setTotalCount(totalOrders);
@@ -135,9 +135,9 @@ function OrdersList() {
                         <tr key={order.id}>
                             <td>{index + 1}</td>
                             <td>{order.id}</td>
-                            <td>{order.products.name}</td>
-                            <td>{order.products.price}</td>
-                            <td>{order.products.type}</td>
+                            <td>{order.product.name}</td>
+                            <td>{order.product.price}</td>
+                            <td>{order.product.type}</td>
                             <td>{formatDate(order.date)}</td>
                             <td>{order.quantity}</td>
                             <td>{order.total}</td>
