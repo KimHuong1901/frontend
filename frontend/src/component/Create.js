@@ -8,7 +8,7 @@ import productService from "../service/ProductService";
 import * as orderService from "../service/OrderService";
 import 'bootstrap/dist/css/bootstrap.min.css';
 function OrderCreate() {
-    const [products, setProducts] = useState([]);
+    const [product, setProducts] = useState([]);
     const navigate = useNavigate();
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [total, setTotal] = useState(0);
@@ -16,7 +16,8 @@ function OrderCreate() {
     useEffect(() => {
         const fetchProducts = async () => {
             const list = await productService.getAllProduct();
-            setProducts(list);
+            console.log("Danh sách sản phẩm" + list)
+            setProducts( list);
         };
         fetchProducts();
     }, []);
@@ -41,7 +42,7 @@ function OrderCreate() {
             const orderData = {
                 ...values,
                 total,
-                products: products.find((p) => p.id === parseInt(values.productId)) || null
+                product: product.find((p) => p.id === parseInt(values.productId)) || null
             };
 
             const isSaved = await orderService.saveOrder(orderData);
@@ -68,8 +69,8 @@ function OrderCreate() {
                 {({ errors, touched, values, setFieldValue }) => {
                     const handleProductChange = (event) => {
                         const productId = event.target.value;
-                        const product = products.find((p) => p.id === parseInt(productId));
-                        setSelectedProduct(product);
+                        const selected = product.find((p) => p.id === parseInt(productId));
+                        setSelectedProduct(selected);
                         setFieldValue("productId", productId);
                         setTotal(product ? product.price * (values.quantity || 0) : 0);
                     };
@@ -100,9 +101,9 @@ function OrderCreate() {
                                 <Field as="select" name="productId" className="form-select"
                                        onChange={handleProductChange}>
                                     <option value="">Chọn sản phẩm</option>
-                                    {products.map((product) => (
-                                        <option key={product.id} value={product.id}>
-                                            {product.name} - ${product.price}
+                                    {product.map((products) => (
+                                        <option key={products.id} value={products.id}>
+                                            {products.name} - ${products.price}
                                         </option>
                                     ))}
                                 </Field>
